@@ -21,3 +21,17 @@ insert into customers(username, password) values
 
 -- TODO: Task 1.2
 -- Write your task 1.2 below
+create table place_orders(
+  order_id char(8) not null,
+  payment_id varchar(128) not null,
+  order_date date not null,
+  total decimal(6,2) not null,
+  username varchar(64) not null, 
+
+  constraint pk_order_id_payment_id primary key(order_id,payment_id)
+);
+
+-- grant privileges to fred
+select "Granting privileges to fred..." as msg;
+grant all privileges on movies.* to 'fred'@'%';
+flush privileges;
