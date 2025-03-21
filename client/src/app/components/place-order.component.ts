@@ -50,13 +50,13 @@ export class PlaceOrderComponent implements OnInit{
     return this.form.invalid
   }
 
-  submitOrder():Observable<any>{
+  submitOrder():void{
     const order:Order = {
       username:this.form.value.username,
       password:this.form.value.password,
       items:this.orders
     }
-    return this.restaurantSvc.postOrder(order)
+    this.restaurantSvc.postOrder(order).then((response) => console.log(response))
   }
 
 

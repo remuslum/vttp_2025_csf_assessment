@@ -23,7 +23,7 @@
         <button type="button" class="btn btn-danger" (click)="resetOrder()">
           Start Over
         </button>
-        <button type="submit" class="btn btn-primary" [disabled]="isFormInvalid()">Confirm</button>
+        <button type="submit" class="btn btn-primary" [disabled]="isFormInvalid()" (click)="submitOrder()">Confirm</button>
       </div>
     </div>
   </div>
