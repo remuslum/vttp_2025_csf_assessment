@@ -12,7 +12,7 @@ COPY client/dist dist
 RUN npm ci && ng build
 
 # Build spring boot
-FROM eclipse-temurin:23-jdk AS builder_java
+FROM openjdk:23-jdk AS builder_java
 
 WORKDIR /src
 
@@ -25,7 +25,7 @@ COPY --from=build_angular /src/dist/client/browser/* src/main/resources/static
 
 RUN chmod a+x mvnw && ./mvnw package -Dmaven.test.skip=true
 
-FROM eclipse-temurin:23-jre 
+FROM openjdk:23-jdk 
 
 WORKDIR /app
 
