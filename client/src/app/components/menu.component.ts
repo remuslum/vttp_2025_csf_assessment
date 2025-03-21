@@ -22,7 +22,8 @@ export class MenuComponent implements OnInit{
   protected menuWithQuantity : Item[] = []
   protected menuWithoutQuantity : Item[] = []
   protected orders:Item[] = []
-  protected priceOfOrders!:Observable<number>
+  protected price:number = 0
+  protected quantity:number = 0
   
 
   ngOnInit():void {
@@ -35,22 +36,31 @@ export class MenuComponent implements OnInit{
     })
 
     this.orderStore.getItems.subscribe({
-      next: (data) => this.orders = data
+      next: (data) => {
+        this.orders = data
+      }
+        
     })
-
-    this.priceOfOrders = this.orderStore.getTotalPrice
   }
 
   increment(item:Item):void{
     item.quantity += 1
-    this.orderStore.addItemToOrder(item)
+    var index = this.orders.indexOf(item)
+    if(index < 0){
+      this.orderStore.addItemToOrder(item)
+    } 
+    this.price = this.calculatePrice(this.orders)
+    this.quantity = this.calculateQuantity(this.orders)
+
   }
 
   decrement(item:Item):void{
-    if(item.quantity > 0){
-      item.quantity -= 1
-      this.orderStore.deleteItemFromCart(item)
-    } 
+    item.quantity -= 1
+    if(item.quantity === 0){
+      this.orderStore.deleteItemFromCart(item._id)
+    }
+    this.price = this.calculatePrice(this.orders)
+    this.quantity = this.calculateQuantity(this.orders)
   }
 
   populateArray():Item[]{
@@ -75,6 +85,22 @@ export class MenuComponent implements OnInit{
 
   confirmOrder():void{
     this.router.navigate(["/confirm"])
+  }
+
+  calculatePrice(items:Item[]):number{
+    var totalPrice:number = 0
+    for(var i = 0; i< items.length; i++){
+      totalPrice += items[i].quantity * items[i].price
+    }
+    return totalPrice
+  }
+
+  calculateQuantity(items:Item[]):number {
+    var totalQuantity:number = 0
+    for(var i = 0; i < items.length; i++){
+      totalQuantity += items[i].quantity
+    }
+    return totalQuantity
   }
 
 

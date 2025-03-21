@@ -1,6 +1,7 @@
-import { Injectable } from "@angular/core";
+import { inject, Injectable } from "@angular/core";
 import { Item,ItemSlice } from "./models";
 import { ComponentStore } from "@ngrx/component-store";
+import { RestaurantService } from "./restaurant.service";
 
 const INIT_STATE:ItemSlice = {
     items : []
@@ -8,6 +9,8 @@ const INIT_STATE:ItemSlice = {
 
 @Injectable({providedIn:'root'})
 export class OrderStore extends ComponentStore<ItemSlice>{
+    private restaurantSvc = inject(RestaurantService)
+
     constructor() {
         super(INIT_STATE)
     }
@@ -24,10 +27,10 @@ export class OrderStore extends ComponentStore<ItemSlice>{
         }
     )
 
-    readonly deleteItemFromCart = this.updater<Item>(
-        (store:ItemSlice, itemToDelete:Item) => {
+    readonly deleteItemFromCart = this.updater<string>(
+        (store:ItemSlice, itemToDelete:string) => {
             return {
-                items: this.removeOneOnly(store.items, itemToDelete)
+                items: store.items.filter(i => i._id != itemToDelete)
             }
         }
     )
@@ -46,17 +49,10 @@ export class OrderStore extends ComponentStore<ItemSlice>{
         }
     )
 
-    private removeOneOnly(items:Item[], item:Item):Item[]{
-        const indexOfItem = items.indexOf(item)
-        if(indexOfItem > -1){
-            items.splice(indexOfItem, 1)
-        }
-        return items
-    }
-
     private calculateOrderPrice(items:Item[]){
         var totalPrice = 0
         for(var i = 0;i < items.length; i++){
+            console.log(totalPrice)
             totalPrice += (items[i].price * items[i].quantity)
         }
         return totalPrice
