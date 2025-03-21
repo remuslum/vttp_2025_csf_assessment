@@ -59,6 +59,7 @@ public class RestaurantController {
           JsonObject response = Json.createReader(new StringReader(paymentResponse.getBody())).readObject();
 
           if(restaurantService.saveData(response, username, items)){
+            System.out.println(response.getJsonNumber("timestamp").longValue());
             Document returnMessage = new Document();
             returnMessage.append("orderId",response.getString("order_id")).append("paymentId",response.getString("payment_id"))
             .append("total",response.getJsonNumber("total").doubleValue()).append("timestamp",response.getJsonNumber("timestamp").longValue());
@@ -67,9 +68,7 @@ public class RestaurantController {
             Document errorMessage = new Document().append("message","Unable to insert into db");
             return ResponseEntity.badRequest().body(errorMessage.toJson());
           }
-
       } catch (Exception e) {
-        e.printStackTrace();
         Document errorMessage = new Document().append("message",e.getMessage());
         return new ResponseEntity<>(errorMessage.toJson(), HttpStatus.INTERNAL_SERVER_ERROR);
       }

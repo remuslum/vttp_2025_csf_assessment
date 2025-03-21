@@ -61,7 +61,7 @@ public class OrdersRepository {
     }
 
     toInsert.append(F_ID,toInsert.getString(ORDER_ID)).append(F_ITEMS,itemDocuments);
-    Document doc = mongoTemplate.insert(toInsert, C_MENUS);
+    Document doc = mongoTemplate.insert(toInsert, C_ORDERS);
     // Check if the returned doc has a _id
     return !doc.getString("_id").isBlank();
 
