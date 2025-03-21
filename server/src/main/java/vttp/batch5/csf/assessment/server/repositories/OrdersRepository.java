@@ -49,6 +49,8 @@ public class OrdersRepository {
   // Write the native MongoDB query for your access methods in the comment below
   //
   //  Native MongoDB query here
+  // db.orders.insertOne({_id:_,order_id:_,payment_id:_,"username":_,"timestamp":_,"items":[
+  // {_id:_, price:_, quantity:_},...])
   public boolean insertOrder(Document toInsert, JsonArray items){
     // convert items to a list of documents
     List<Document> itemDocuments = new LinkedList<>();

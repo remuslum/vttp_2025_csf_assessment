@@ -47,19 +47,15 @@ public class RestaurantController {
     JsonArray items = object.getJsonArray("items");
     double totalPrice = calculatePrice(items);
     
-    // {"username":"fred","password":"fred",
-    // "items":[{"_id":"9aedc2a8","name":"Balik Ekmek","description":"BALIK EKMEK / ISTANBUL STREET FLAVOR, FISH SANDWICH","price":9.2,"quantity":2},{"_id":"4936f7a8","name":"Ground Tacos","description":"Sandwiches have eggs, bacon, cheese, avocado, spinach, and tomato","price":6.1,"quantity":2}]}
     if(!restaurantRepository.isUserValid(username, password)){
       Document error = new Document().append("message", "Invalid username and/or password");
       return new ResponseEntity<>(error.toJson(), HttpStatus.UNAUTHORIZED);
     } else {
       try {
           ResponseEntity<String> paymentResponse = restaurantService.sendPayment(username, totalPrice);
-          System.out.println(paymentResponse);
           JsonObject response = Json.createReader(new StringReader(paymentResponse.getBody())).readObject();
 
           if(restaurantService.saveData(response, username, items)){
-            System.out.println(response.getJsonNumber("timestamp").longValue());
             Document returnMessage = new Document();
             returnMessage.append("orderId",response.getString("order_id")).append("paymentId",response.getString("payment_id"))
             .append("total",response.getJsonNumber("total").doubleValue()).append("timestamp",response.getJsonNumber("timestamp").longValue());
