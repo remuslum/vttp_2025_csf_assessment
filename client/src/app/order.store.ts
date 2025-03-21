@@ -38,6 +38,14 @@ export class OrderStore extends ComponentStore<ItemSlice>{
         }
     )
 
+    readonly addItems = this.updater<Item[]>(
+        (store:ItemSlice, itemsToAdd:Item[]) => {
+            return {
+                items : []
+            } as ItemSlice
+        }
+    )
+
     private removeOneOnly(items:Item[], item:Item):Item[]{
         const indexOfItem = items.indexOf(item)
         if(indexOfItem > -1){

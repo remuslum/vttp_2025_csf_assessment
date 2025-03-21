@@ -10,3 +10,9 @@ export interface Item {
 export interface ItemSlice {
     items : Item[]
 }
+
+export interface Order {
+    username:string
+    password:string
+    items:Item[]
+}

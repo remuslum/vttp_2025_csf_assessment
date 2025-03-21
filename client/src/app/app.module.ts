@@ -13,7 +13,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes:Routes = [
   {path:"",component:MenuComponent},
-  {path:"confirm",component:ConfirmationComponent}
+  {path:"confirm",component:PlaceOrderComponent}
 ]
 @NgModule({
   declarations: [

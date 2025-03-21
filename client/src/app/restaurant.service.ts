@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { Item } from "./models";
+import { Item, Order } from "./models";
 
 @Injectable({
   providedIn: 'root'
@@ -16,4 +16,7 @@ export class RestaurantService {
   }
 
   // TODO: Task 3.2
+  postOrder(order:Order):Observable<any>{
+    return this.httpClient.post<Order>("/api/food_order", order)
+  }
 }
