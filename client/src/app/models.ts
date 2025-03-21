@@ -4,4 +4,9 @@ export interface Item {
     name:string
     description:string
     price:number
+    quantity:number
+}
+
+export interface ItemSlice {
+    items : Item[]
 }

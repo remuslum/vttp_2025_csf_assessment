@@ -1,36 +1,45 @@
 <div class="row mt-3">
   <div class="col d-flex justify-content-between align-items-center">
-    <div class="fs-1 fw-bold text-primary">Menu ($XXX)</div>
+    <div class="fs-1 fw-bold text-primary">Menu 
+      ($ {{priceOfOrders | async}})</div>
     <div>
-      <button type="button" class="btn btn-primary">
-        Place Order (XXX)
+      <button type="button" class="btn btn-primary" [disabled]="isOrderEmpty()" (click)="confirmOrder()">
+        Place Order (
+          {{orders.length}}
+        )
       </button>
     </div>
   </div>
 </div>
 
-@for(menu of menu$ | async; track $index){
+@for(item of menuWithQuantity; track $index){
 <!-- each row display a single mene item -->
   <div class="row mb-2">
     <div class="col">
       <div class="menu-item">
         <div>
-          <button type="button" class="btn btn-warning">
+          <button type="button" class="btn btn-warning" (click)="decrement(item)">
             <i class="bi bi-x-square"></i>
           </button>
         </div>
         <div class="menu-details">
-          <div>Name: <span class="fw-bold"> {{menu.name}} </span> </div>
+          <div>Name: <span class="fw-bold"> {{item.name}} </span> </div>
           <div>Description:
             <span class="fst-italic">
-              {{menu.description}}
+              {{item.description}}
             </span>
           </div>
-          <div></div>
-            <div class="text-danger fw-bold">Quantity: 0</div>
+          <div>Price:
+            <span>{{item.price}}</span>
+          </div>
+          @if(item.quantity > 0){
+            <div class="text-danger fw-bold">Quantity: 
+              <span>{{item.quantity}}</span>
+            </div>
+          }
         </div>
         <div class="menu-button-end">
-          <button type="button" class="btn btn-success">
+          <button type="button" class="btn btn-success" (click)="increment(item)">
             <i class="bi bi-plus-circle"></i>
           </button>
         </div>
@@ -38,4 +47,5 @@
     </div>
   </div>
 }
+
 

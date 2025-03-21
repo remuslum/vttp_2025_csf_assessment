@@ -12,7 +12,8 @@ import { ConfirmationComponent } from './components/confirmation.component';
 import { RouterModule, Routes } from '@angular/router';
 
 const routes:Routes = [
-  {path:"",component:MenuComponent}
+  {path:"",component:MenuComponent},
+  {path:"confirm",component:ConfirmationComponent}
 ]
 @NgModule({
   declarations: [
