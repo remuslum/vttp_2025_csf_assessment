@@ -1,10 +1,11 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Item, Order } from '../models';
+import { Item, Order, ResponseFromPayment } from '../models';
 import { OrderStore } from '../order.store';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RestaurantService } from '../restaurant.service';
+import { ResponseService } from '../response.service';
 
 @Component({
   selector: 'app-place-order',
@@ -18,6 +19,7 @@ export class PlaceOrderComponent implements OnInit{
   private router = inject(Router)
   private formBuilder = inject(FormBuilder)
   private restaurantSvc = inject(RestaurantService)
+  private responseSvc = inject(ResponseService)
 
   // TODO: Task 3
   protected order$!:Observable<Item[]>
@@ -29,7 +31,11 @@ export class PlaceOrderComponent implements OnInit{
     this.order$ = this.orderStore.getItems
     this.totalPrice$ = this.orderStore.getTotalPrice
     this.order$.subscribe({
-      next: (data) => this.orders = data
+      next: (data) => {
+        this.orders = data
+        console.log(data)
+        console.log(data.length)
+      }
     })
     this.form = this.createForm()
   }
@@ -56,7 +62,16 @@ export class PlaceOrderComponent implements OnInit{
       password:this.form.value.password,
       items:this.orders
     }
-    this.restaurantSvc.postOrder(order).then((response) => console.log(response))
+    this.restaurantSvc.postOrder(order).then((response) => {
+      // const responseFromPayment:ResponseFromPayment = {
+      //   orderId : response.orderId,
+      //   paymentId : response.paymentId,
+      //   total : response.total,
+      //   timestamp : response.timestamp
+      // }
+      this.responseSvc.addValue(response)
+      this.router.navigate(["/confirm"])
+    }).catch((error) => alert(error.message))
   }
 
 

@@ -16,3 +16,10 @@ export interface Order {
     password:string
     items:Item[]
 }
+
+export interface ResponseFromPayment {
+    orderId:string
+    paymentId:string
+    total:number
+    timestamp:number
+}

@@ -84,7 +84,7 @@ export class MenuComponent implements OnInit{
   }
 
   confirmOrder():void{
-    this.router.navigate(["/confirm"])
+    this.router.navigate(["/place-order"])
   }
 
   calculatePrice(items:Item[]):number{
